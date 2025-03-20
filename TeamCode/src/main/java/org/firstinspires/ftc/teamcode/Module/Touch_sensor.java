@@ -7,14 +7,16 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Touch_sensor {
-    private DigitalChannel Low_Drive,Max_Drive,Max_Static;
+    private DigitalChannel Low_Drive,Max_Drive,Max_Static,Min_Strela;
     private LinearOpMode l;
 
     public void init_touch_sensor(HardwareMap hardwareMap, LinearOpMode l){ //init
         Low_Drive = hardwareMap.get(DigitalChannel.class,"Static");
         Max_Drive = hardwareMap.get(DigitalChannel.class,"Max");
         Max_Static = hardwareMap.get(DigitalChannel.class,"Max_Low");
+        //Min_Strela = hardwareMap.get(DigitalChannel.class,"Min");
 
+        Min_Strela.setMode(DigitalChannel.Mode.INPUT);
         Max_Static.setMode(DigitalChannel.Mode.INPUT);
         Low_Drive.setMode(DigitalChannel.Mode.INPUT);
         Max_Drive.setMode(DigitalChannel.Mode.INPUT);
@@ -37,5 +39,12 @@ public class Touch_sensor {
         }else{
             return false;
         }
+    }
+    public boolean min_pvrt(){ //check min pos strela
+    if (Min_Strela.getState()){
+        return true;
+    }else{
+        return false;
+    }
     }
 }
