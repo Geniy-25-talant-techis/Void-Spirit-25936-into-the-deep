@@ -16,6 +16,9 @@ public class Grab {
         Pvrt = hardwareMap.get(Servo.class,"SLC");
         Clash = hardwareMap.get(Servo.class,"SLP");
 
+        boolean true_pvrt;
+        boolean true_clash;
+
         Clash.setDirection(Servo.Direction.REVERSE);
         Pvrt.setDirection(Servo.Direction.FORWARD);
 
@@ -23,14 +26,30 @@ public class Grab {
 
         telemetry.addData("Grab init",null);
     }
-    double clash_close = 0;
-    double clash_open = 0.5;
-    public void clash (boolean close_true,boolean open_true) throws InterruptedException{
-        if(close_true){
-            Clash.setPosition(clash_close);
+    double clash_close0 = 0;
+    double clash_open0 = 0.5;
+    double povorot_up0 = 0.5;
+    double povorot_down0 = 0;
+    public void clash_open (boolean status_clash_open) throws InterruptedException{
+        if(status_clash_open) {
+            Clash.setPosition(clash_open0);
         }
-        if(open_true){
-            Clash.setPosition(clash_open);
+    }
+    public void clash_close(boolean status_clash_close) throws InterruptedException{
+        if(status_clash_close){
+            Clash.setPosition(clash_close0);
+        }
+    }
+
+    public void povorot_up (boolean status_povorot_up) throws InterruptedException{
+        if(status_povorot_up){
+            Pvrt.setPosition(povorot_up0);
+        }
+
+    }
+    public void povorot_down(boolean status_povorot_down) throws InterruptedException{
+        if(status_povorot_down){
+            Pvrt.setPosition(povorot_down0);
         }
     }
 
