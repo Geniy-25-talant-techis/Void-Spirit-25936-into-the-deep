@@ -54,6 +54,7 @@ public class Initilization {
             telemetry.addData("Max",ts.max());
             telemetry.addData("Min",ts.min());
             telemetry.update();
+            //
     }
 
 }
