@@ -2,12 +2,13 @@ package org.firstinspires.ftc.teamcode.Module;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-
+@Config
 public class Grab {
     private Servo Pvrt,Clash;
     private LinearOpMode l;
@@ -24,12 +25,12 @@ public class Grab {
 
         this.l = l;
 
-        telemetry.addData("Grab init",null);
+        l.telemetry.addData("Grab init",null);
     }
-    double clash_close0 = 0;
-    double clash_open0 = 0.5;
-    double povorot_up0 = 0.5;
-    double povorot_down0 = 0;
+    public static double clash_close0 = 0.046;
+    public static double clash_open0 = 0.25;
+    public static double povorot_up0 = 0.5;
+    public static double povorot_down0 = 0;
     public void clash_open (boolean status_clash_open) throws InterruptedException{
         if(status_clash_open) {
             Clash.setPosition(clash_open0);

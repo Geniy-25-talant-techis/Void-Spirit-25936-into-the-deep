@@ -2,10 +2,11 @@ package org.firstinspires.ftc.teamcode.Module;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-
+@Config
 public class Touch_sensor {
     private DigitalChannel Low_Drive,Max_Drive,Max_Static,Min_Strela;
     private LinearOpMode l;
@@ -16,16 +17,23 @@ public class Touch_sensor {
         Max_Static = hardwareMap.get(DigitalChannel.class,"Max_Low");
         //Min_Strela = hardwareMap.get(DigitalChannel.class,"Min");
 
-        Min_Strela.setMode(DigitalChannel.Mode.INPUT);
+       // Min_Strela.setMode(DigitalChannel.Mode.INPUT);
         Max_Static.setMode(DigitalChannel.Mode.INPUT);
         Low_Drive.setMode(DigitalChannel.Mode.INPUT);
         Max_Drive.setMode(DigitalChannel.Mode.INPUT);
 
         this.l = l;
-        telemetry.addData("Touch Sensor Init",null);
+        l.telemetry.addData("Touch Sensor Init",null);
 
     }
-    public boolean max(){ //check max pos
+    public void return_ts(){
+        l.telemetry.addData("maxx",Max_Drive.getState());
+        l.telemetry.addData("midle",Max_Static.getState());
+        l.telemetry.addData("low",Low_Drive.getState());
+        l.telemetry.update();
+
+    }
+    public boolean max(){//check max pos
         if(Max_Drive.getState()&&Max_Static.getState()){
             return false;
         }else{

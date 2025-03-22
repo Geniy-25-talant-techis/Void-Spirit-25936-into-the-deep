@@ -2,24 +2,29 @@ package org.firstinspires.ftc.teamcode.Module;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import java.util.concurrent.ExecutionException;
-
+@Config
 public class wheel_base { //class for wheel_base
+
     private DcMotor front_right_motor_drive = null; //init motors for wheel_base
     private DcMotor front_left_motor_drive = null;
     private DcMotor back_right_motor_drive = null;
     private DcMotor back_left_motor_drive = null;
-    private BNO055IMU imu;
+    //private BNO055IMU imu;
     private LinearOpMode l;
 
-    public void init_wheel_base(HardwareMap hardwareMap, BNO055IMU imu, LinearOpMode l) { //init wheel_base
+
+    public void init_wheel_base(HardwareMap hardwareMap, LinearOpMode l) { //init wheel_base
 
         front_right_motor_drive = hardwareMap.get(DcMotor.class, "MFR");
         back_right_motor_drive = hardwareMap.get(DcMotor.class, "MBR");
@@ -44,12 +49,17 @@ public class wheel_base { //class for wheel_base
         back_right_motor_drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         this.l = l;
-        this.imu = imu;
+       // this.imu = imu;
 
-        telemetry.addData("Wheel base Init",null);
+
+
+        l.telemetry.addData("Wheel base Init",null);
     }
-
-    public void drive(double x, double y, double xy, boolean fast_xy) throws InterruptedException {  //drive wheel_base
+    public static double k = 0.8;
+    public void drive_auto(double x, double y, double xy, boolean fast_xy){
+        back_right_motor_drive.setDirection(DcMotorSimple.Direction.REVERSE);
+        back_left_motor_drive.setDirection(DcMotorSimple.Direction.FORWARD);
+        front_left_motor_drive.setDirection(DcMotorSimple.Direction.REVERSE);
         double fast_XY = 0.5;
 
         if (fast_xy) {
@@ -63,7 +73,7 @@ public class wheel_base { //class for wheel_base
 
 
         double leftFrontPower = Y + X + XY;
-        double rightFrontPower = -(Y + X + XY);
+        double rightFrontPower = -(-Y + X + XY);
         double leftBackPower = Y - X + XY;
         double rightBackPower = Y + X - XY;
 
@@ -81,7 +91,43 @@ public class wheel_base { //class for wheel_base
         front_left_motor_drive.setPower(leftFrontPower);
         front_right_motor_drive.setPower(rightFrontPower);
         back_left_motor_drive.setPower(leftBackPower);
-        back_right_motor_drive.setPower(rightBackPower * 0.7);
+        back_right_motor_drive.setPower(rightBackPower * k);
+
+    }
+
+    public void drive(double x, double y, double xy, boolean fast_xy) throws InterruptedException {  //drive wheel_base
+        double fast_XY = 0.5;
+
+        if (fast_xy) {
+            fast_XY += 0.5;
+        }
+
+        double max;
+        double Y = -y;
+        double X = -x;
+        double XY = xy * fast_XY;
+
+
+        double leftFrontPower = Y + X + XY;
+        double rightFrontPower = -(-Y + X + XY);
+        double leftBackPower = Y - X + XY;
+        double rightBackPower = Y + X - XY;
+
+        max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
+        max = Math.max(max, Math.abs(leftBackPower));
+        max = Math.max(max, Math.abs(rightBackPower));
+
+        if (max > 1.0) {
+            leftFrontPower /= max;
+            rightFrontPower /= max;
+            leftBackPower /= max;
+            rightBackPower /= max;
+        }
+
+        front_left_motor_drive.setPower(leftFrontPower);
+        front_right_motor_drive.setPower(rightFrontPower);
+        back_left_motor_drive.setPower(leftBackPower);
+        back_right_motor_drive.setPower(rightBackPower * k);
 
     }
 
@@ -132,17 +178,18 @@ public class wheel_base { //class for wheel_base
         }
     }
 
-        public void move_yaw (double xy0) throws InterruptedException {
-            double alfha = imu.getAngularOrientation().thirdAngle;
-            double YAW = xy0 - alfha;
-            while (Math.abs(YAW) >= 5 && (!l.isStopRequested())) {
-                if (YAW > 0) {
-                    drive(0, 0, pwr_YAW, false);
-                } else {
-                    drive(0, 0, -pwr_YAW, false);
-                }
-            }
-        }
+
+//        public void move_yaw (double xy0) throws InterruptedException {
+//            double alfha = imu.getAngularOrientation().thirdAngle;
+//            double YAW = xy0 - alfha;
+//            while (Math.abs(YAW) >= 5 && (!l.isStopRequested())) {
+//                if (YAW > 0) {
+//                    drive(0, 0, pwr_YAW, false);
+//                } else {
+//                    drive(0, 0, -pwr_YAW, false);
+//                }
+//            }
+//        }
 
 
 
