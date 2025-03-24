@@ -89,13 +89,13 @@ public class Initilization {
     public static double power__yaw__lift = 0.7;
     public void auto() throws InterruptedException{
        wb.drive_auto(power__full,0,0,false);
-        strl.power_strela(power__yaw__lift,0.3,false,false);
+        strl.power_strela((power__yaw__lift-0.05),0.3,false,false);
         l.sleep(1000);
         wb.drive_auto((power__yaw__lift-0.5),0,0,false);
-        strl.power_strela((power__full-0.1),power__yaw__lift,false,false);
-        g.povorot_up(false);
+        strl.power_strela((power__full-0.05),power__yaw__lift,false,false);
+       g.povorot_up(false);
         g.povorot_down(true);
-        l.sleep(1000);
+        l.sleep(940);
         wb.drive_auto(zero,0,0,false);
         strl.power_strela(zero,power__yaw__lift,false,false);
         g.clash_close(false);
@@ -110,7 +110,7 @@ public class Initilization {
         strl.power_strela(-power__yaw__lift,power__yaw__lift,false,false);
         l.sleep(2000);
         wb.drive_auto(-power__full,0,0,false);
-        l.sleep(4000);
+        l.sleep(500);
         wb.drive_auto(zero,0,0,false);
     }
     public void auto_parking() throws InterruptedException {

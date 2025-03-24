@@ -27,8 +27,8 @@ public class Grab {
 
         l.telemetry.addData("Grab init",null);
     }
-    public static double clash_close0 = 0.046;
-    public static double clash_open0 = 0.25;
+    public static double clash_close0 = 0.035;
+    public static double clash_open0 = 0.3;
     public static double povorot_up0 = 0.5;
     public static double povorot_down0 = 0;
     public void clash_open (boolean status_clash_open) throws InterruptedException{
